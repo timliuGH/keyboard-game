@@ -2,13 +2,14 @@
     margin: 0;
 }
 
-#button {
+div {
     text-align: center;
-    margin: 200px 0;
 }
 
 button {
     font-size: 50px;
+    text-align: center;
+    margin-top: 50px;
 }
 
 #phrase {
@@ -16,4 +17,9 @@ button {
     height: 100%;
     text-align: center;
     font-size: 80px;
+}
+
+#scoreDisplay {
+  font-size: 30px;
+  display: none;
 }

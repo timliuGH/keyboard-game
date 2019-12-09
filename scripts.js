@@ -1,5 +1,7 @@
 const phrase = document.querySelector("#phrase");
 const button = document.querySelector("button");
+const scoreSpan = document.querySelector("#scoreValue");
+let score = 0;
 
 const bank = ['Blueberry Jam',
 'Strawberry Lemonade',
@@ -28,6 +30,19 @@ const bank = ['Blueberry Jam',
 const bankSize = bank.length;
 
 button.addEventListener("click", function() {
+    // Show/update score
+    document.querySelector("#scoreDisplay").style.display = "block";
+    if (button.textContent === "Next") {
+        score += 1;
+    } else {
+        score = 0;
+    }
+    scoreSpan.innerHTML = score;
+
+    // Change button text
+    button.textContent = "Next";
+
+    // Get next phrase
     const max = Math.floor(bankSize - 1);
     const index = Math.floor(Math.random() * (max + 1));
     phrase.textContent = bank[index];
