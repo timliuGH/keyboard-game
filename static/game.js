@@ -61,11 +61,66 @@ const bank = ['Blueberry Jam',
 
 const bankSize = bank.length;
 
+let mins = 0.1;
+let secs = mins * 60;
+
+function countdown() {
+  mins = 0.05;
+  secs = mins * 60;
+  setTimeout('Decrement()', 60);
+}
+
+function Decrement() {
+  if (document.getElementById) {
+    minutes = document.getElementById("minutes");
+    seconds = document.getElementById("seconds");
+    if (seconds < 59) {
+      seconds.value = secs;
+    } else {
+      minutes.value = getMins();
+      seconds.value = getSecs();
+    }
+
+    if (mins < 1 && secs == 20) {
+      minutes.style.color = "red";
+      seconds.style.color = "red";
+    }
+
+    if (mins == 0 && secs == 0) {
+      console.log(`mins: ${mins} secs: ${secs}`);
+      button.textContent = "Play Again!";
+      button.addEventListener("click", countdown);
+      minutes.value = 0;
+      seconds.value = 0;
+    } else {
+      secs--;
+      setTimeout('Decrement()', 1000);
+    }
+  }
+}
+
+function getMins() {
+  mins = Math.floor(secs / 60);
+  return mins;
+}
+
+function getSecs() {
+  return secs - Math.round(mins * 60);
+}
+
 button.addEventListener("click", function() {
+    // Initially,
+
+
+
+
     // Show/update score
     document.querySelector("#scoreDisplay").style.display = "block";
     if (button.textContent === "Next") {
         score += 1;
+    // } else if (button.textContent === "Play Again!") {
+    //     score = 0;
+    //     button.removeEventListener("click", countdown);
     } else {
         score = 0;
     }
@@ -73,6 +128,12 @@ button.addEventListener("click", function() {
 
     // Change button text
     button.textContent = "Next";
+    button.removeEventListener("click", countdown);
+
+    // Remove onlick
+    button.onclick = null;
+
+    document.querySelector("#timer").style.display = "block";
 
     // Get next phrase
     const max = Math.floor(bankSize - 1);

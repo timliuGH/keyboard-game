@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+{% block title %}Developer View{% endblock %}
+{% block body %}
+
+<div class="container">
+  <h1>Add phrases</h1>
+  <select name="categories" id="categories">
+    <option value="">--Choose a category--</option>
+    {% for category in categories %}
+      <option value="category">{{ category[0] }}</option>
+    {% endfor %}
+  </select>
+</div>
+
+{% endblock %}

@@ -23,3 +23,21 @@ button {
   font-size: 30px;
   display: none;
 }
+
+#minutes {
+  width: 20px;
+}
+
+#seconds {
+  width: 35px;
+}
+
+#timer {
+  font-size: 30px;
+  display: none;
+}
+
+input {
+  border: none;
+  font-size: 30px;
+}
