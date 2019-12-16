@@ -25,7 +25,21 @@ db = scoped_session(sessionmaker(bind=engine))
 def home():
     """Initial landing page; logs off dev"""
     session.clear()
-    return render_template("index.html")
+
+    # Get all categories
+    categories = db.execute("SELECT category FROM phrases GROUP BY category").fetchall()
+    return render_template("index.html", categories=categories)
+
+
+@app.route("/game")
+def game():
+    """Displays game page with start/next button and current phrase"""
+    category = request.args.get("category")
+    phrases = db.execute("SELECT phrase FROM phrases WHERE category=:category", {"category": category}).fetchall()
+    data = []
+    for phrase in phrases:
+        data.append(phrase[0].title())
+    return render_template("game.html", data=data, category=category)
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -56,13 +70,3 @@ def dev():
     # Get all categories
     categories = db.execute("SELECT category FROM phrases GROUP BY category").fetchall()
     return render_template("dev.html", categories=categories)
-
-
-@app.route("/game")
-def game():
-    """Displays game page with start/next button and current phrase"""
-    phrases = db.execute("SELECT phrase FROM phrases").fetchall()
-    data = []
-    for phrase in phrases:
-        data.append(phrase[0].title())
-    return render_template("game.html", data=data)

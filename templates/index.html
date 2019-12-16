@@ -1,25 +1,17 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="index.css">
-    <title>Keyboard Game</title>
-  </head>
-  <body>
-    <h1>Welcome to Stepping Bee!</h1>
-    <form action="./game.html" method="get">
-        <button>Let's Get Stepping!</button>
-    </form>
-    <!-- <p id="scoreDisplay">SCORE: <span id="scoreValue">0</span></p>
-    <div>
-      <p id="phrase">Welcome to Stepping Bee!</p>
-      <div>
-        Time Remaining:
-        <input id="minutes" type="text">:
-        <input id="seconds" type="text">
-      </div>
-      <button onclick="countdown();">Let's Get Stepping!</button>
-    </div>
-    <script src="scripts.js"></script> -->
-  </body>
-</html>
+{% extends "layout.html" %}
+{% block title %}Stepping Bee{% endblock %}
+{% block stylesheet %}<link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">{% endblock %}
+{% block body %}
+<div class="container">
+  <h1>Welcome to Stepping Bee!</h1>
+  <form action="./game" method="get">
+    <select name="category" id="category" required>
+      <option value="">--Choose a category--</option>
+      {% for category in categories %}
+        <option value="{{ category[0] }}">{{ category[0] }}</option>
+      {% endfor %}
+    </select>
+    <button>Let's Get Stepping!</button>
+  </form>
+</div>
+{% endblock %}

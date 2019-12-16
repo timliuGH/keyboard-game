@@ -1,15 +1,24 @@
 {% extends "layout.html" %}
-{% block title %}Stepping Bee{% endblock %}
+{% block title %}Stepping Bee | {{ category }}{% endblock %}
 {% block stylesheet %}<link rel="stylesheet" href="{{ url_for('static', filename='game.css') }}">{% endblock %}
 
 {% block body %}
-<p id="scoreDisplay">SCORE: <span id="scoreValue">0</span></p>
+<ul id="navbar" class="nav justify-content-between">
+  <li class="nav-item">
+    <p>SCORE: <span id="scoreValue">0</span></p>
+  </li>
+  <li class="nav-item">
+    <form action="/" method="get">
+      <button id="homeButton">Main Menu</button>
+    </form>
+  </li>
+</ul>
 <div>
   <div id="timer">
     Time Remaining:
     <input id="seconds" type="text">
   </div>
-  <p id="phrase">Welcome to Stepping Bee!</p>
+  <p id="phrase">Are you ready?</p>
   <button id="playButton">Let's Get Stepping!</button>
 </div>
 {% endblock %}
@@ -70,7 +79,7 @@
     countdown();
   }
 
-  const totalMins = 2;
+  const totalMins = 0.05;
   let secs = totalMins * 60;
 
   function countdown() {
@@ -88,7 +97,6 @@
       }
 
       if (secs == 0) {
-        console.log("finished countdown");
         seconds.value = 0;
         document.querySelector("#phrase").innerHTML = "Time's up!";
         document.querySelector("#playButton").innerHTML = "Play again!";
