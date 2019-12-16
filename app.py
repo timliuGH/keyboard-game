@@ -64,5 +64,5 @@ def game():
     phrases = db.execute("SELECT phrase FROM phrases").fetchall()
     data = []
     for phrase in phrases:
-        data.append(phrase[0])
+        data.append(phrase[0].title())
     return render_template("game.html", data=data)
