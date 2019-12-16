@@ -61,5 +61,8 @@ def dev():
 @app.route("/game")
 def game():
     """Displays game page with start/next button and current phrase"""
-
-    return render_template("game.html")
+    phrases = db.execute("SELECT phrase FROM phrases").fetchall()
+    data = []
+    for phrase in phrases:
+        data.append(phrase[0])
+    return render_template("game.html", data=data)
