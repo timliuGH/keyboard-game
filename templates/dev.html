@@ -3,6 +3,26 @@
 {% block body %}
 
 <div class="container">
+
+  <!-- form for adding adjectives -->
+  <!-- search bar with auto-complete -->
+  <form>
+    <label>Search/Add an adjective: </label>
+    <input type="text" id="adjective" name="adjective" list="adjective-list">
+    <datalist id="adjective-list">
+      {% for phrase in phrases %}
+        <option>{{ phrase[0] }}</option>
+      {% endfor %}
+    </datalist>
+  </form>
+
+  <!-- form for adding nouns -->
+  <!-- search bar with auto-complete -->
+
+  <!-- form for adding full phrase -->
+  <!-- search bar with auto-complete -->
+
+
   <h1>Add phrases</h1>
   <select name="categories" id="categories">
     <option value="">--Choose a category--</option>

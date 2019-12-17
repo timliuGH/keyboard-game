@@ -67,6 +67,9 @@ def dev():
     if user_id is None:
         return render_template("login.html")
 
+    phrases = db.execute("SELECT phrase FROM phrases").fetchall()
+    return render_template("dev.html", phrases=phrases)
+
     # Get all categories
-    categories = db.execute("SELECT category FROM phrases GROUP BY category").fetchall()
-    return render_template("dev.html", categories=categories)
+    # categories = db.execute("SELECT category FROM phrases GROUP BY category").fetchall()
+    # return render_template("dev.html", categories=categories)
