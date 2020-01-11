@@ -4,20 +4,23 @@
 
 <div class="container">
 
-  <!-- form for adding adjectives -->
-  <!-- search bar with auto-complete -->
-  <form>
-    <label>Search/Add an adjective: </label>
-    <input type="text" id="adjective" name="adjective" list="adjective-list">
-    <datalist id="adjective-list">
-      {% for phrase in phrases %}
-        <option>{{ phrase[0] }}</option>
-      {% endfor %}
-    </datalist>
+  <form class="form-inline" action="/add-adj-n" method="post">
+        <label class="my-1 mr-2" for="adjective">Add an adjective: </label>
+        <input class="my-1 mr-sm-2" type="text" class="form-control" id="adjective" name="adjective" list="adjective-list" autofocus>
+        <datalist id="adjective-list">
+          {% for adjective in adjectives %}
+            <option>{{ adjective[0] }}</option>
+          {% endfor %}
+        </datalist>
+        <label class="my-1 mr-2" for="noun">Add a noun: </label>
+        <input class="my-1 mr-sm-2" type="text" class="form-control" id="noun" name="noun" list="noun-list">
+        <datalist id="noun-list">
+          {% for noun in nouns %}
+            <option>{{ noun[0] }}</option>
+          {% endfor %}
+        </datalist>
+        <button type="submit" class="btn btn-primary my-1 mr-2">Add Entry</button>
   </form>
-
-  <!-- form for adding nouns -->
-  <!-- search bar with auto-complete -->
 
   <!-- form for adding full phrase -->
   <!-- search bar with auto-complete -->

@@ -6,6 +6,7 @@
   <form action="./game" method="get">
     <select name="category" id="category" required>
       <option value="">--Choose a category--</option>
+      <option value="Animal Alliterations">Animal Alliterations</option>
       {% for category in categories %}
         <option value="{{ category[0] }}">{{ category[0] }}</option>
       {% endfor %}

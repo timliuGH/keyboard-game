@@ -1,0 +1,126 @@
+{% extends "layout.html" %}
+{% block title %}Stepping Bee | {{ category }}{% endblock %}
+{% block stylesheet %}<link rel="stylesheet" href="{{ url_for('static', filename='game.css') }}">{% endblock %}
+
+{% block body %}
+<ul id="navbar" class="nav justify-content-between">
+  <li class="nav-item">
+    <p>SCORE: <span id="scoreValue">0</span></p>
+  </li>
+  <li class="nav-item">
+    <form action="/" method="get">
+      <button id="homeButton">Main Menu</button>
+    </form>
+  </li>
+</ul>
+<div>
+  <div id="timer">
+    Time Remaining:
+    <input id="seconds" type="text">
+  </div>
+  <p id="phrase">Are you ready?</p>
+  <button id="playButton">Let's Get Stepping!</button>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+  // Get words from Flask database query
+  const adjs = {{ adjs|tojson }};
+  const nouns = {{ nouns|tojson }};
+  const numAdjs = adjs.length;
+
+  // Track which words already used in current game
+  const usedIndices = new Set();
+
+  function play() {
+    // Show timer
+    document.querySelector("#timer").style.display = "block";
+
+    // Increment score
+    let nextText = "Next Phrase!";
+    // Handle if just starting the game (score is 0 during first word)
+    let buttonElement = document.querySelector("#playButton");
+    let scoreSpan = document.querySelector("#scoreValue");
+    if (buttonElement.innerText === nextText) {
+      scoreSpan.innerHTML = parseInt(scoreSpan.innerHTML, 10) + 1;
+    }
+
+    // Handle if player spelled all available words in current word bank
+    if (parseInt(scoreSpan.innerHTML, 10) >= numAdjs)
+      usedIndices.clear();
+
+    // Change text of button to prompt for next phrase
+    buttonElement.innerHTML = nextText;
+
+    // Change phrase
+    // Get random index for adjs
+    const max = Math.floor(numAdjs - 1);
+    let index = Math.floor(Math.random() * (max + 1));
+    // Check if index already used
+    while (usedIndices.has(index)) {
+      index = Math.floor(Math.random() * (max + 1));
+    }
+    usedIndices.add(index);
+
+    // Get nouns starting with same letter as chosen adjective
+    let startingLetter = adjs[index][0];
+    const eligibleNouns = [];
+    nouns.forEach(function(noun){
+      if (noun[0] == startingLetter)
+        eligibleNouns.push(noun);
+    });
+    // Get random noun from array of eligible nouns
+    const nounMax = Math.floor(eligibleNouns.length - 1);
+    const nounIndex = Math.floor(Math.random() * (nounMax + 1));
+
+    let newPhrase = adjs[index] + ' ' + eligibleNouns[nounIndex];
+    let phraseElement = document.querySelector("#phrase");
+    phraseElement.innerHTML = newPhrase;
+  }
+
+  function addButtonClickEvent(event) {
+    document.querySelector("#playButton").addEventListener("click", event);
+  }
+
+  function reset() {
+    usedIndices.clear();
+    document.getElementById("seconds").style.color = "black";
+    document.querySelector("#scoreValue").innerHTML = 0;
+    document.querySelector("#playButton").removeEventListener("click", reset);
+    addButtonClickEvent(play);
+    countdown();
+  }
+
+  const totalMins = 0.4;
+  let secs = totalMins * 60;
+
+  function countdown() {
+    secs = totalMins * 60;
+    setTimeout('Decrement()', 60);
+    // Prevent "Next Phrase" clicks from resetting timer
+    document.querySelector("#playButton").removeEventListener("click", countdown);
+  }
+  function Decrement() {
+      let seconds = document.getElementById("seconds");
+      seconds.value = secs;
+
+      if (secs == 20) {
+        seconds.style.color = "red";
+      }
+
+      if (secs == 0) {
+        seconds.value = 0;
+        document.querySelector("#phrase").innerHTML = "Time's up!";
+        document.querySelector("#playButton").innerHTML = "Play again!";
+        addButtonClickEvent(reset);
+      } else {
+        secs--;
+        setTimeout('Decrement()', 1000);
+      }
+  }
+
+  addButtonClickEvent(play);
+  addButtonClickEvent(countdown);
+</script>
+{% endblock %}
