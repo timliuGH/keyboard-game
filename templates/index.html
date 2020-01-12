@@ -2,16 +2,22 @@
 {% block title %}Stepping Bee{% endblock %}
 {% block body %}
 <div class="container">
-  <h1>Welcome to Stepping Bee!</h1>
-  <form action="./game" method="get">
-    <select name="category" id="category" required>
-      <option value="">--Choose a category--</option>
-      <option value="Animal Alliterations">Animal Alliterations</option>
-      {% for category in categories %}
-        <option value="{{ category[0] }}">{{ category[0] }}</option>
-      {% endfor %}
-    </select>
-    <button>Let's Get Stepping!</button>
-  </form>
+    <h1>Welcome to Stepping Bee!</h1>
+    <form action="./game" method="get">
+        <div class="form-row">
+            <label class="col-auto col-form-label" for="category">Pick a category: </label>
+            <div class="col-auto">
+                <select class="form-control" name="category" id="category" required>
+                    <option value="Animal Alliterations">Animal Alliterations</option>
+                    {% for category in categories %}
+                      <option value="{{ category[0] }}">{{ category[0] }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-auto">
+                <button class="btn btn-primary" type="submit">Let's Get Stepping!</button>
+            </div>
+        </div>
+    </form>
 </div>
 {% endblock %}
