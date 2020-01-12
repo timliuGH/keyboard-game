@@ -83,10 +83,11 @@ def dev():
         return render_template("login.html")
 
     phrases = db.execute("SELECT phrase FROM phrases").fetchall()
+    categories = db.execute("SELECT category FROM phrases GROUP BY category").fetchall()
     adjectives = db.execute("SELECT adjective FROM adjectives").fetchall()
     nouns = db.execute("SELECT noun FROM nouns").fetchall()
 
-    return render_template("dev.html", phrases=phrases, adjectives=adjectives, nouns=nouns)
+    return render_template("dev.html", phrases=phrases, categories=categories, adjectives=adjectives, nouns=nouns)
 
     # Get all categories
     # categories = db.execute("SELECT category FROM phrases GROUP BY category").fetchall()
@@ -95,7 +96,7 @@ def dev():
 
 @app.route("/add-adj-n", methods=["POST"])
 def add_adj_n():
-    """Add user-supplied adjective and/or noun to database"""
+    """Add user-supplied adjective and/or noun to database with title case"""
     adj = request.form.get("adjective").title()
     noun = request.form.get("noun").title()
     if adj != "":
@@ -104,4 +105,16 @@ def add_adj_n():
         db.execute("INSERT INTO nouns (noun) VALUES (:noun)", {"noun": noun})
     db.commit()
 
+    return redirect("/dev")
+
+
+@app.route("/add-phrase", methods=["POST"])
+def add_phrase():
+    """Add user-supplied phrase and category to database with title case"""
+    phrase = request.form.get("phrase").title()
+    category = request.form.get("category").title()
+    if phrase != "":
+        db.execute("INSERT INTO phrases (phrase, category) \
+            VALUES (:phrase, :category)", {"phrase": phrase, "category": category})
+        db.commit()
     return redirect("/dev")

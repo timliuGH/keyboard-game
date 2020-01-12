@@ -3,36 +3,63 @@
 {% block body %}
 
 <div class="container">
-
-  <form class="form-inline" action="/add-adj-n" method="post">
-        <label class="my-1 mr-2" for="adjective">Add an adjective: </label>
-        <input class="my-1 mr-sm-2" type="text" class="form-control" id="adjective" name="adjective" list="adjective-list" autofocus>
-        <datalist id="adjective-list">
-          {% for adjective in adjectives %}
-            <option>{{ adjective[0] }}</option>
-          {% endfor %}
-        </datalist>
-        <label class="my-1 mr-2" for="noun">Add a noun: </label>
-        <input class="my-1 mr-sm-2" type="text" class="form-control" id="noun" name="noun" list="noun-list">
-        <datalist id="noun-list">
-          {% for noun in nouns %}
-            <option>{{ noun[0] }}</option>
-          {% endfor %}
-        </datalist>
-        <button type="submit" class="btn btn-primary my-1 mr-2">Add Entry</button>
+  <form action="/add-adj-n" method="post">
+      <fieldset>
+          <legend>Add to "Animal Alliterations" category</legend>
+          <div class="form-row">
+              <label class="col-auto col-form-label" for="adjective">Adjective: </label>
+              <div class="col-auto">
+                <input class="form-control" type="text" id="adjective" name="adjective" list="adjective-list">
+                <datalist id="adjective-list">
+                  {% for adjective in adjectives %}
+                    <option>{{ adjective[0] }}</option>
+                  {% endfor %}
+                </datalist>
+              </div>
+              <label class="col-auto col-form-label" for="noun">Animal: </label>
+              <div class="col-auto">
+                <input class="form-control" type="text" id="noun" name="noun" list="noun-list">
+                <datalist id="noun-list">
+                  {% for noun in nouns %}
+                    <option>{{ noun[0] }}</option>
+                  {% endfor %}
+                </datalist>
+              </div>
+              <div class="col-auto">
+                  <button type="submit" class="btn btn-primary">Add Entry</button>
+              </div>
+          </div>
+      </fieldset>
   </form>
-
-  <!-- form for adding full phrase -->
-  <!-- search bar with auto-complete -->
-
-
-  <h1>Add phrases</h1>
-  <select name="categories" id="categories">
-    <option value="">--Choose a category--</option>
-    {% for category in categories %}
-      <option value="category">{{ category[0] }}</option>
-    {% endfor %}
-  </select>
+  <br>
+  <form action="/add-phrase" method="post">
+      <fieldset>
+          <legend>Add a phrase</legend>
+          <div class="form-row">
+              <label class="col-auto col-form-label" for="phrase">Phrase: </label>
+              <div class="col-auto">
+                  <input class="form-control" type="text" id="phrase" name="phrase" list="phrase-list" autofocus>
+                  <datalist id="phrase-list">
+                    {% for phrase in phrases %}
+                      <option>{{ phrase[0] }}</option>
+                    {% endfor %}
+                  </datalist>
+              </div>
+              <label class="col-auto col-form-label" for="category">Category: </label>
+              <div class="col-auto">
+                  <input class="form-control" type="text" id="category" name="category" list="category-list" required>
+                  <datalist id="category-list">
+                    {% for category in categories %}
+                      <option>{{ category[0] }}</option>
+                    {% endfor %}
+                  </datalist>
+              </div>
+              <div class="col-auto">
+                  <button class="btn btn-primary" type="submit">Add Entry</button>
+              </div>
+          </div>
+      </fieldset>
+  </form>
 </div>
 
 {% endblock %}
