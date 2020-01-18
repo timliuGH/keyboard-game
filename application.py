@@ -38,13 +38,13 @@ def game():
 
     # Handle Animal Alliterations category
     if category == "Animal Alliterations":
-        dbAdjs = db.execute("SELECT adjective FROM adjectives").fetchall()
+        db_adjs = db.execute("SELECT adjective FROM adjectives").fetchall()
         adjs = []
-        for adj in dbAdjs:
+        for adj in db_adjs:
             adjs.append(adj[0])
-        dbNouns = db.execute("SELECT noun FROM nouns").fetchall()
+        db_nouns = db.execute("SELECT noun FROM nouns").fetchall()
         nouns = []
-        for noun in dbNouns:
+        for noun in db_nouns:
             nouns.append(noun[0])
         return render_template("allit-game.html", adjs=adjs, nouns=nouns, category=category)
 
