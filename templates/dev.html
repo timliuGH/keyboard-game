@@ -50,7 +50,7 @@
                   <input class="form-control" type="text" id="category" name="category" list="category-list" required>
                   <datalist id="category-list">
                     {% for category in categories %}
-                      <option>{{ category[0] }}</option>
+                      <option>{{ category[0] }} ({{ category[1] }})</option>
                     {% endfor %}
                   </datalist>
               </div>
@@ -60,6 +60,8 @@
           </div>
       </fieldset>
   </form>
+  <br>
+
 </div>
 
 {% endblock %}

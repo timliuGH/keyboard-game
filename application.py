@@ -83,15 +83,22 @@ def dev():
         return render_template("login.html")
 
     phrases = db.execute("SELECT phrase FROM phrases").fetchall()
+
+    # Get categories with their counts
     categories = db.execute("SELECT category FROM phrases GROUP BY category").fetchall()
+    category_counts = []
+    for category in categories:
+        count = db.execute("SELECT COUNT(phrase) FROM phrases \
+            WHERE category=:category", {"category": category[0]}).fetchone()
+        category_counts.append(count)
+    final_categories = []
+    for category, count in zip(categories, category_counts):
+        final_categories.append((category[0], count[0]))
+
     adjectives = db.execute("SELECT adjective FROM adjectives").fetchall()
     nouns = db.execute("SELECT noun FROM nouns").fetchall()
 
-    return render_template("dev.html", phrases=phrases, categories=categories, adjectives=adjectives, nouns=nouns)
-
-    # Get all categories
-    # categories = db.execute("SELECT category FROM phrases GROUP BY category").fetchall()
-    # return render_template("dev.html", categories=categories)
+    return render_template("dev.html", phrases=phrases, categories=final_categories, adjectives=adjectives, nouns=nouns)
 
 
 @app.route("/add-adj-n", methods=["POST"])
