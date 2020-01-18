@@ -2,7 +2,7 @@ import os
 
 from flask import Flask, render_template, session, request, redirect
 from flask_session import Session
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, exc
 from sqlalchemy.orm import scoped_session, sessionmaker
 
 app = Flask(__name__)
@@ -99,10 +99,16 @@ def add_adj_n():
     """Add user-supplied adjective and/or noun to database with title case"""
     adj = request.form.get("adjective").title()
     noun = request.form.get("noun").title()
-    if adj != "":
-        db.execute("INSERT INTO adjectives (adjective) VALUES (:adj)", {"adj": adj})
-    if noun != "":
-        db.execute("INSERT INTO nouns (noun) VALUES (:noun)", {"noun": noun})
+    try:
+        if adj != "":
+            db.execute("INSERT INTO adjectives (adjective) VALUES (:adj)", {"adj": adj})
+    except exc.IntegrityError:
+        db.rollback()
+    try:
+        if noun != "":
+            db.execute("INSERT INTO nouns (noun) VALUES (:noun)", {"noun": noun})
+    except exc.IntegrityError:
+        db.rollback()
     db.commit()
 
     return redirect("/dev")
@@ -114,7 +120,10 @@ def add_phrase():
     phrase = request.form.get("phrase").title()
     category = request.form.get("category").title()
     if phrase != "":
-        db.execute("INSERT INTO phrases (phrase, category) \
-            VALUES (:phrase, :category)", {"phrase": phrase, "category": category})
-        db.commit()
+        try:
+            db.execute("INSERT INTO phrases (phrase, category) \
+                VALUES (:phrase, :category)", {"phrase": phrase, "category": category})
+            db.commit()
+        except exc.IntegrityError:
+            db.rollback()
     return redirect("/dev")
