@@ -125,7 +125,15 @@ def add_adj_n():
 def add_phrase():
     """Add user-supplied phrase and category to database with title case"""
     phrase = request.form.get("phrase").title()
-    category = request.form.get("category").title()
+    category_plus_count = request.form.get("category").title()
+
+    # Strip off count so it doesn't create a new category with count
+    category = ""
+    for char in category_plus_count:
+        if char == ' ':
+            break
+        category = category + char
+
     if phrase != "":
         try:
             db.execute("INSERT INTO phrases (phrase, category) \
